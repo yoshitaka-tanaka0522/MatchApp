@@ -45,6 +45,8 @@ class User extends Authenticatable
         //hasMany→usersのテーブルはreactionsテーブルのto_user_id複数に対して働きかけている
         //→複数持っている
         //hasMany(相手のモデル名, 相手モデルのID, 自モデルのID)
+        //to_user_id ・・ 表示されているユーザー
+        //from_user_id ・・ ログインしているユーザー
         return $this->hasMany('App\Models\Reaction','to_user_id','id');
     }
 

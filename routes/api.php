@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//他の人からのいいねが来たとき(外部からのアクセス)に対応するapi
+Route::post('/like','ReactionController@create');

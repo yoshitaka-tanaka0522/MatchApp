@@ -8,6 +8,10 @@
       <li class="personIcon">
         <a href="/users/show/{{Auth::id()}}"><i class="fas fa-user fa-2x"></i></a></li>
       <li class="appIcon"><a href="{{route('home')}}"><img src="/images/techpit-match-icon.png"></a></li>
+      
+      <!-- ここの行を追加 -->
+      <li class="messageIcon"><a href="{{route('matching')}}"><i class="fas fa-2x fa-comments"></a></i></li>
+      
     </ul>
   </nav>
   <div id="tinderslide">
@@ -29,10 +33,10 @@
   </div>
 </div>
 
-// ここを追加
 <script>
-  var usersNum = {{ $userCount }};
-  var from_user_id = {{ $from_user_id }};
+var usersNum = {{ $userCount }};
+var from_user_id = {{ $from_user_id }};
 </script>
 
 @endsection
+

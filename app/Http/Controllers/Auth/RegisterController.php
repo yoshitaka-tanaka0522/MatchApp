@@ -8,6 +8,9 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
+use App\Services\CheckExtensionServices;
+use App\Services\FileUploadServices;
 
 class RegisterController extends Controller
 {
@@ -53,8 +56,10 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'img_name' => ['file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2000'],
+            'self_introduction' => ['string', 'max:255'],
         ]);
-    }
+    }    
 
     /**
      * Create a new user instance after a valid registration.
@@ -64,15 +69,19 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $imageFile = $data['img_name'];
+        $list = FileUploadServices::fileUpload($imageFile);
+        list($extension, $fileNameToStore, $fileData) = $list;
+        $data_url = CheckExtensionServices::checkExtension($fileData, $extension);
+        $image = Image::make($data_url);
+        $image->resize(400,400)->save(storage_path() . '/app/public/images/' . $fileNameToStore );
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            //以下を追加
             'self_introduction' => $data['self_introduction'],
             'sex' => $data['sex'],
-            'img_name' => $data['img_name'],
+            'img_name' => $fileNameToStore,
         ]);
     }
-
 }

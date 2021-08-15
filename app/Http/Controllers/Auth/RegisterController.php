@@ -69,10 +69,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        //base64でエンコードされた画像データを画面のinput要素から取得する
         $imageFile = $data['img_name'];
         $list = FileUploadServices::fileUpload($imageFile);
         list($extension, $fileNameToStore, $fileData) = $list;
         $data_url = CheckExtensionServices::checkExtension($fileData, $extension);
+        //dataUrlをInterventionImageに読み込ませる
         $image = Image::make($data_url);
         $image->resize(400,400)->save(storage_path() . '/app/public/images/' . $fileNameToStore );
         return User::create([

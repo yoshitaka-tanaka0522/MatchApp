@@ -38,4 +38,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //ReactionテーブルUserテーブルの中から、toUserIdとfromUserIdを1つずつ選択することができる
+    public function toUserId() 
+    {
+        //hasMany→usersのテーブルはreactionsテーブルのto_user_id複数に対して働きかけている
+        //→複数持っている
+        //hasMany(相手のモデル名, 相手モデルのID, 自モデルのID)
+        return $this->hasMany('App\Models\Reaction','to_user_id','id');
+    }
+
+    public function fromUserId()
+    {
+        //hasMany→usersのテーブルはreactionsテーブルのfrom_user_id複数に対して働きかけている
+        //→複数持っている
+       return $this->hasMany('App\Models\Reaction','from_user_id','id');
+    }
 }

@@ -26,3 +26,4 @@ Route::group(['prefix' => 'users', 'middleware' => 'auth'], function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/matching', 'MatchingController@index')->name('matching'); 

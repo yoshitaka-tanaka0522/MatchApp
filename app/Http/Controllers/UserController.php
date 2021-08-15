@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Intervention\Image\Facades\Image;
+use App\Services\CheckExtensionServices;
+use App\Services\FileUploadServices;
 
 class UserController extends Controller
 {
@@ -29,4 +33,33 @@ class UserController extends Controller
         $user = User::findorFail($id);
         return view('users.show',compact('user'));
     }
+
+    public function edit($id)
+    {
+        $user = User::findorFail($id);
+
+        return view('users.edit', compact('user')); 
+    }
+
+    //作成したフォームリクエストを適用するためにProfileRequestを受け取る
+    public function update($id, ProfileRequest $request)
+    {
+        $user = User::findorFail($id);
+        if(!is_null($request['img_name'])){
+            $imageFile = $request['img_name'];
+            $list = FileUploadServices::fileUpload($imageFile);
+            list($extension, $fileNameToStore, $fileData) = $list;   
+            $data_url = CheckExtensionServices::checkExtension($fileData, $extension);
+            $image = Image::make($data_url);        
+            $image->resize(400,400)->save(storage_path() . '/app/public/images/' . $fileNameToStore );
+
+            $user->img_name = $fileNameToStore;
+        }
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->sex = $request->sex;
+        $user->self_introduction = $request->self_introduction;
+        $user->save();
+        return redirect('home'); 
+    }    
 }

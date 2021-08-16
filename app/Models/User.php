@@ -56,4 +56,12 @@ class User extends Authenticatable
         //→複数持っている
        return $this->hasMany('App\Models\Reaction','from_user_id','id');
     }
+
+    public function chatMessage() {
+        return $this->hasMany('App\Models\ChatMessage');
+    }
+
+    public function chatRoomUsers() {
+        return $this->hasMany('App\Models\ChatRoomUsers');
+    }
 }

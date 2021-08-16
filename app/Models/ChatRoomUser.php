@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ChatRoomUsers extends Model
+class ChatRoomUser extends Model
 {
     //代入できるフィールドを設定する
     //create()メソッドで保存する場合は、

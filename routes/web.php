@@ -30,5 +30,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/matching', 'MatchingController@index')->name('matching');
 
 Route::group(['prefix' => 'chat', 'middleware' => 'auth'], function () {
+    Route::post('chat', 'ChatController@chat')->name('chat.chat');
     Route::post('show', 'ChatController@show')->name('chat.show');
 });
